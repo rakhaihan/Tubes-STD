@@ -67,7 +67,7 @@ void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan, str
             }
         }
     }
-    indexRute--;
+    
 }
 
 void findAllRoutes(graph &G, string gudangAsal, string gudangTujuan, string allRoutes[][], int &ruteCount, int jarak[]) {
@@ -90,7 +90,7 @@ void cariRuteTerpendek(graph G, string gudangAsal, string gudangTujuan) {
     findAllRoutes(G, gudangAsal, gudangTujuan, allRoutes, ruteCount, jarak);
 
     if (ruteCount > 0) {
-        // Mencari nilai minimum dari total jarak tempuh
+        // Temukan indeks rute dengan jarak minimum (pencarian nilai ekstrim)
         int minIndex = 0;
         for (int i = 1; i < ruteCount; i++) {
             if (jarak[i].totalJarak < jarak[minIndex].totalJarak) {
@@ -98,6 +98,7 @@ void cariRuteTerpendek(graph G, string gudangAsal, string gudangTujuan) {
             }
         }
 
+        // Cetak rute terpendek
         cout << "Rute terpendek: ";
         for (int i = 0; !allRoutes[jarak[minIndex].indexRute][i].empty(); i++) {
             cout << allRoutes[jarak[minIndex].indexRute][i] << " ";
@@ -106,7 +107,7 @@ void cariRuteTerpendek(graph G, string gudangAsal, string gudangTujuan) {
         cout << "Jarak tempuh: " << jarak[minIndex].totalJarak << endl;
     } else {
         cout << "Tidak ada rute yang ditemukan." << endl;
-    }
+    
 }
 
 void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteMacet) {
@@ -122,7 +123,29 @@ void lewatJalanTol(graph &G, string gudangAsal, string gudangTujuan, int jarakTo
 int hitungBiayaPerjalanan(graph &G, string gudangAsal, string gudangTujuan){
     //I.S terdefinisi graph G, GudangAsal (posisi saat ini), gudangTujuan (gudang yang dituju)
     //I.S memberikan hasil perhitungan biaya perjalanan
-    //catatan : biaya = jarakTempuh * 10000
+    //catatan : biaya = jarakTempuh * ongkirPerKilo
 
+    int ongkirPerKilo = 10000;
+    string allRoutes[][];
+    JarakRute jarak[];
+    int ruteCount = 0;
+
+    findAllRoutes(G, gudangAsal, gudangTujuan, allRoutes, ruteCount, jarak);
+
+    if (ruteCount > 0) {
+        // Temukan indeks rute dengan jarak minimum
+        int minIndex = 0;
+        for (int i = 1; i < ruteCount; i++) {
+            if (jarak[i].totalJarak < jarak[minIndex].totalJarak) {
+                minIndex = i;
+            }
+        }
+
+        int totalJarak = jarak[minIndex].totalJarak;
+        int biaya = totalJarak * ongkirPerKilo;
+        return biaya;
+    } else {
+        cout << "Tidak ada rute yang ditemukan." << endl;
+        return 0;
     
 }
