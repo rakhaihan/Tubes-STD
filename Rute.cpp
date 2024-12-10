@@ -124,6 +124,53 @@ void cariRuteTerpendek(graph G, string gudangAsal, string gudangTujuan) {
 void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteMacet) {
     //I.S terdefinisi graph G, GudangAsal (posisi saat ini), gudangTujuan (gudang yang dituju), dan ruteMacet (rute yang terdapat kemacetan)
     //F.S memberikan rute terpendek dari gudangAal ke gudangTujuan dengan menghindari ruteMacet
+    string allRoutes[MAX_RUTE_LENGTH][MAX_RUTE_LENGTH];
+    JarakRute jarak[MAX_RUTE_LENGTH];
+    bool lewatRuteMacet;
+    int ruteCount = 0;
+
+    findAllRoutes(G, gudangAsal, gudangTujuan, allRoutes, ruteCount, jarak);
+
+    // Filter out routes that use the congested route
+    int filteredRuteCount = 0;
+    string filteredRoutes[MAX_RUTE_LENGTH][MAX_RUTE_LENGTH];
+    JarakRute filteredJarak[MAX_RUTE_LENGTH];
+
+    for (int i = 0; i < ruteCount; i++) {
+        bool lewatRuteMacet = false;
+        for (int j = 0; !allRoutes[i][j].empty(); j++) {
+            if (allRoutes[i][j] == ruteMacet) {
+                lewatRuteMacet = true;
+                break;
+            }
+        }
+        if (!lewatRuteMacet) {
+            for (int j = 0; !allRoutes[i][j].empty(); j++) {
+                filteredRoutes[filteredRuteCount][j] = allRoutes[i][j];
+            }
+            filteredJarak[filteredRuteCount] = jarak[i];
+            filteredRuteCount++;
+        }
+    }
+
+    if (filteredRuteCount > 0) {
+        // Temukan indeks rute dengan jarak minimum
+        int minIndex = 0;
+        for (int i = 1; i < filteredRuteCount; i++) {
+            if (filteredJarak[i].totalJarak < filteredJarak[minIndex].totalJarak) {
+                minIndex = i;
+            }
+        }
+
+        cout << "Rute terpendek menghindari kemacetan: ";
+        for (int i = 0; !filteredRoutes[filteredJarak[minIndex].indexRute][i].empty(); i++) {
+            cout << filteredRoutes[filteredJarak[minIndex].indexRute][i] << " ";
+        }
+        cout << endl;
+        cout << "Jarak tempuh: " << filteredJarak[minIndex].totalJarak << endl;
+    } else {
+        cout << "Tidak ada rute yang ditemukan yang menghindari kemacetan." << endl;
+    }
 }
 
 void lewatJalanTol(graph &G, string gudangAsal, string gudangTujuan, int jarakTol, bool tolTersedia) {
