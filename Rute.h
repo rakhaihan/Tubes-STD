@@ -16,6 +16,8 @@
 
 using namespace std;
 
+const int MAX_RUTE_LENGTH = 100;
+
 typedef struct gudang *adrVertex;
 typedef struct rute *adrEdge;
 
@@ -35,16 +37,24 @@ struct graph {
     adrVertex firstVertex;
 };
 
+// Struktur data untuk menyimpan jarak dan indeks rute
+struct JarakRute {
+    int totalJarak;
+    int indexRute;
+};
 
+// Function prototypes
 void createVertex(string namaGudang, adrVertex &v);
 void initGraph(graph &G);
 void addVertex(graph &G, string namaGudang);
 void addEdge(graph &G, string gudangAsal, string gudangTujuan, int jarakTempuh);
 
-void findAllRoutes(graph &G, string gudangAsal, string gudangTujuan, string allRoutes[][], int &ruteCount, int jarak[]);
+void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan, string rutePerjalanan[], int &indexRute, string allRoutes[][], int &ruteCount, JarakRute jarak[], int &jarakTempuh);
+void findAllRoutes(graph &G, string gudangAsal, string gudangTujuan, string allRoutes[][], int &ruteCount, JarakRute jarak[]);
 void cariRuteTerpendek(graph G, string gudangAsal, string gudangTujuan);
 
 void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteMacet);
+
 void lewatJalanTol(graph &G, string gudangAsal, string gudangTujuan, int jarakTol, bool tolTersedia);
 
 int hitungBiayaPerjalanan(graph &G, string gudangAsal, string gudangTujuan);
