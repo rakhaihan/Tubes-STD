@@ -78,10 +78,9 @@ void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan, str
             }
         }
     }
-
 }
 
-void findAllRoutes(graph &G, string gudangAsal, string gudangTujuan, string allRoutes[][MAX_RUTE_LENGTH], int &ruteCount, int jarak[]) {
+void findAllRoutes(graph &G, string gudangAsal, string gudangTujuan, string allRoutes[][MAX_RUTE_LENGTH], int &ruteCount, JarakRute jarak[]) {
     //I.S terdefinisi graph G, GudangAsal (posisi saat ini), gudangTujuan (gudang yang dituju)
     //F.S Semua rute dari gudangAsal ke gudangTujuan disimpan di allRoutes, dan jarak tempuh disimpan di jarak
     string rutePerjalanan[MAX_RUTE_LENGTH];
@@ -174,8 +173,56 @@ void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteM
 }
 
 void lewatJalanTol(graph &G, string gudangAsal, string gudangTujuan, int jarakTol, bool tolTersedia) {
-    //I.S Graf G telah diinisialisasi, dan mungkin sudah memiliki vertex (gudang) serta edge (rute)
-    //F.S Jika opsi "tol tersedia" dipilih, rute baru akan ditambahkan dari gudang asal ke tujuan dengan informasi jalur tol (nama rute dan jarak)
+    if (!tolTersedia) {
+        cout << "Rute tol dari " << gudangAsal << " ke " << gudangTujuan << " tidak tersedia." << endl;
+        return;
+    }
+
+    adrVertex vAsal = firstVertex(G);
+    adrVertex vTujuan = firstVertex(G);
+    bool foundAsal = false, foundTujuan = false;
+
+    while (vAsal != nullptr) {
+        if (namaGudang(vAsal) == gudangAsal) {
+            foundAsal = true;
+        }
+        if (namaGudang(vTujuan) == gudangTujuan) {
+            foundTujuan = true;
+        }
+        if (foundAsal && foundTujuan) {
+            break;
+        }
+        if (!foundTujuan) {
+            vTujuan = nextVertex(vTujuan);
+        }
+        if (!foundAsal) {
+            vAsal = nextVertex(vAsal);
+        }
+    }
+
+    if (!foundAsal) {
+        addVertex(G, gudangAsal);
+        vAsal = firstVertex(G);
+        while (vAsal != nullptr && namaGudang(vAsal) != gudangAsal) {
+            vAsal = nextVertex(vAsal);
+        }
+    }
+
+    if (!foundTujuan) {
+        addVertex(G, gudangTujuan);
+        vTujuan = firstVertex(G);
+        while (vTujuan != nullptr && namaGudang(vTujuan) != gudangTujuan) {
+            vTujuan = nextVertex(vTujuan);
+        }
+    }
+
+    if (vAsal != nullptr && vTujuan != nullptr) {
+        addEdge(G, gudangAsal, gudangTujuan, jarakTol);
+        cout << "Rute tol dari " << gudangAsal << " ke " << gudangTujuan << " dengan jarak " << jarakTol
+             << " km berhasil ditambahkan." << endl;
+    } else {
+        cout << "Gagal menambahkan rute tol. Pastikan gudang asal dan tujuan valid." << endl;
+    }
 }
 
 int hitungBiayaPerjalanan(graph &G, string gudangAsal, string gudangTujuan){
