@@ -43,11 +43,11 @@ adrVertex findVertex(graph &G, string vertexName) {
     return NULL;
 }
 
-void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan, string rutePerjalanan[], int &indexRute, string allRoutes[][MAX_RUTE_LENGTH], int &ruteCount, JarakRute jarak[], int &jarakTempuh) {
-    adrVertex v;
-    adrEdge e;
-    bool visited;
 
+void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan,
+                       string rutePerjalanan[], int &indexRute,
+                       string allRoutes[][MAX_RUTE_LENGTH], int &ruteCount,
+                       JarakRute jarak[], int &jarakTempuh) {
     rutePerjalanan[indexRute++] = posisiSekarang;
 
     if (posisiSekarang == posisiTujuan) {
@@ -58,11 +58,12 @@ void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan, str
         jarak[ruteCount].indexRute = ruteCount;
         ruteCount++;
     } else {
-        v = findVertex(G, posisiSekarang);
+        adrVertex v = findVertex(G, posisiSekarang);
         if (v != NULL) {
-            e = firstEdge(v);
+            adrEdge e = firstEdge(v);
             while (e != NULL) {
-                visited = false;
+                // Periksa jika node sudah dikunjungi
+                bool visited = false;
                 for (int i = 0; i < indexRute; i++) {
                     if (rutePerjalanan[i] == namaRute(e)) {
                         visited = true;
@@ -78,7 +79,9 @@ void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan, str
             }
         }
     }
+    indexRute--; // Backtrack
 }
+
 
 void findAllRoutes(graph &G, string gudangAsal, string gudangTujuan, string allRoutes[][MAX_RUTE_LENGTH], int &ruteCount, JarakRute jarak[]) {
     //I.S terdefinisi graph G, GudangAsal (posisi saat ini), gudangTujuan (gudang yang dituju)
@@ -120,17 +123,17 @@ void cariRuteTerpendek(graph G, string gudangAsal, string gudangTujuan) {
     }
 }
 
+
 void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteMacet) {
     //I.S terdefinisi graph G, GudangAsal (posisi saat ini), gudangTujuan (gudang yang dituju), dan ruteMacet (rute yang terdapat kemacetan)
     //F.S memberikan rute terpendek dari gudangAal ke gudangTujuan dengan menghindari ruteMacet
+
     string allRoutes[MAX_RUTE_LENGTH][MAX_RUTE_LENGTH];
     JarakRute jarak[MAX_RUTE_LENGTH];
-    bool lewatRuteMacet;
     int ruteCount = 0;
 
     findAllRoutes(G, gudangAsal, gudangTujuan, allRoutes, ruteCount, jarak);
 
-    // Filter out routes that use the congested route
     int filteredRuteCount = 0;
     string filteredRoutes[MAX_RUTE_LENGTH][MAX_RUTE_LENGTH];
     JarakRute filteredJarak[MAX_RUTE_LENGTH];
@@ -153,7 +156,6 @@ void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteM
     }
 
     if (filteredRuteCount > 0) {
-        // Temukan indeks rute dengan jarak minimum
         int minIndex = 0;
         for (int i = 1; i < filteredRuteCount; i++) {
             if (filteredJarak[i].totalJarak < filteredJarak[minIndex].totalJarak) {
@@ -162,8 +164,8 @@ void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteM
         }
 
         cout << "Rute terpendek menghindari kemacetan: ";
-        for (int i = 0; !filteredRoutes[filteredJarak[minIndex].indexRute][i].empty(); i++) {
-            cout << filteredRoutes[filteredJarak[minIndex].indexRute][i] << " ";
+        for (int i = 0; !filteredRoutes[minIndex][i].empty(); i++) {
+            cout << filteredRoutes[minIndex][i] << " ";
         }
         cout << endl;
         cout << "Jarak tempuh: " << filteredJarak[minIndex].totalJarak << endl;
@@ -171,6 +173,7 @@ void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteM
         cout << "Tidak ada rute yang ditemukan yang menghindari kemacetan." << endl;
     }
 }
+
 
 void lewatJalanTol(graph &G, string gudangAsal, string gudangTujuan, int jarakTol, bool tolTersedia) {
     if (!tolTersedia) {
