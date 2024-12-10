@@ -37,17 +37,18 @@ struct graph {
     adrVertex firstVertex;
 };
 
-// Struct data untuk menyimpan jarak dan indeks rute
+// Struktur data untuk menyimpan jarak dan indeks rute
 struct JarakRute {
     int totalJarak;
     int indexRute;
 };
 
-
+// Function prototypes
 void createVertex(string namaGudang, adrVertex &v);
 void initGraph(graph &G);
 void addVertex(graph &G, string namaGudang);
 void addEdge(graph &G, string gudangAsal, string gudangTujuan, int jarakTempuh);
+adrVertex findVertex(graph &G, string vertexName);
 
 void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan, string rutePerjalanan[], int &indexRute, string allRoutes[][MAX_RUTE_LENGTH], int &ruteCount, JarakRute jarak[], int &jarakTempuh);
 void findAllRoutes(graph &G, string gudangAsal, string gudangTujuan, string allRoutes[][MAX_RUTE_LENGTH], int &ruteCount, JarakRute jarak[]);
