@@ -32,6 +32,17 @@ void addEdge(graph &G, string gudangAsal, string gudangTujuan, int jarakTempuh) 
     }
 }
 
+adrVertex findVertex(graph &G, string vertexName) {
+    adrVertex v = firstVertex(G);
+    while (v != NULL) {
+        if (namaGudang(v) == vertexName) {
+            return v;
+        }
+        v = nextVertex(v);
+    }
+    return NULL;
+}
+
 void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan, string rutePerjalanan[], int &indexRute, string allRoutes[][MAX_RUTE_LENGTH], int &ruteCount, JarakRute jarak[], int &jarakTempuh) {
     adrVertex v;
     adrEdge e;
@@ -67,10 +78,10 @@ void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan, str
             }
         }
     }
-    
+
 }
 
-void findAllRoutes(graph &G, string gudangAsal, string gudangTujuan, string allRoutes[][], int &ruteCount, int jarak[]) {
+void findAllRoutes(graph &G, string gudangAsal, string gudangTujuan, string allRoutes[][MAX_RUTE_LENGTH], int &ruteCount, int jarak[]) {
     //I.S terdefinisi graph G, GudangAsal (posisi saat ini), gudangTujuan (gudang yang dituju)
     //F.S Semua rute dari gudangAsal ke gudangTujuan disimpan di allRoutes, dan jarak tempuh disimpan di jarak
     string rutePerjalanan[MAX_RUTE_LENGTH];
@@ -81,16 +92,16 @@ void findAllRoutes(graph &G, string gudangAsal, string gudangTujuan, string allR
 
 void cariRuteTerpendek(graph G, string gudangAsal, string gudangTujuan) {
     //I.S terdefinisi graph G, GudangAsal (posisi saat ini), gudangTujuan (gudang yang dituju)
-    //F.S memberikan rute terpendek dari gudangAsal ke gudangTujuan 
+    //F.S memberikan rute terpendek dari gudangAsal ke gudangTujuan
     //catatan : mencari nilai minimum dari array
-    string allRoutes[][];
-    JarakRute jarak[];
+    string allRoutes[MAX_RUTE_LENGTH][MAX_RUTE_LENGTH];
+    JarakRute jarak[MAX_RUTE_LENGTH];
     int ruteCount = 0;
 
     findAllRoutes(G, gudangAsal, gudangTujuan, allRoutes, ruteCount, jarak);
 
     if (ruteCount > 0) {
-        // Temukan indeks rute dengan jarak minimum (pencarian nilai ekstrim)
+        // Temukan indeks rute dengan jarak minimum
         int minIndex = 0;
         for (int i = 1; i < ruteCount; i++) {
             if (jarak[i].totalJarak < jarak[minIndex].totalJarak) {
@@ -107,7 +118,7 @@ void cariRuteTerpendek(graph G, string gudangAsal, string gudangTujuan) {
         cout << "Jarak tempuh: " << jarak[minIndex].totalJarak << endl;
     } else {
         cout << "Tidak ada rute yang ditemukan." << endl;
-    
+    }
 }
 
 void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteMacet) {
@@ -126,8 +137,8 @@ int hitungBiayaPerjalanan(graph &G, string gudangAsal, string gudangTujuan){
     //catatan : biaya = jarakTempuh * ongkirPerKilo
 
     int ongkirPerKilo = 10000;
-    string allRoutes[][];
-    JarakRute jarak[];
+    string allRoutes[MAX_RUTE_LENGTH][MAX_RUTE_LENGTH];
+    JarakRute jarak[MAX_RUTE_LENGTH];
     int ruteCount = 0;
 
     findAllRoutes(G, gudangAsal, gudangTujuan, allRoutes, ruteCount, jarak);
@@ -147,5 +158,5 @@ int hitungBiayaPerjalanan(graph &G, string gudangAsal, string gudangTujuan){
     } else {
         cout << "Tidak ada rute yang ditemukan." << endl;
         return 0;
-    
+    }
 }
