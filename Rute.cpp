@@ -1,6 +1,8 @@
 #include "Rute.h"
 
 void createVertex(string namaGudang, adrVertex &v) {
+    //I.S Nama gudang (namaGudang) diberikan, pointer v belum diinisialisasi
+    //F.S Pointer v mengarah ke simpul baru yang merepresentasikan gudang dengan atribut namaGudang, serta atribut lainnya (nextVertex, firstEdge) diinisialisasi ke nilai awal (NULL)
     v = new gudang;
     namaGudang(v) = namaGudang;
     nextVertex(v) = NULL;
@@ -8,10 +10,14 @@ void createVertex(string namaGudang, adrVertex &v) {
 }
 
 void initGraph(graph &G) {
+    //I.S Struktur data graph G dideklarasikan tetapi belum diinisialisasi
+    //F.S Struktur data graph G diinisialisasi, di mana firstVertex bernilai NULL
     firstVertex(G) = NULL;
 }
 
 void addVertex(graph &G, string namaGudang) {
+    //I.S Graph G dan nama gudang (namaGudang) diberikan. Vertex mungkin belum ada di dalam graph
+    //F.S Vertex baru dengan nama gudang tersebut ditambahkan ke graph G di posisi awal (menjadi firstVertex)
     adrVertex v;
     createVertex(namaGudang, v);
     nextVertex(v) = firstVertex(G);
@@ -19,6 +25,8 @@ void addVertex(graph &G, string namaGudang) {
 }
 
 void addEdge(graph &G, string gudangAsal, string gudangTujuan, int jarakTempuh) {
+    //I.S Graph G diberikan, beserta gudang asal (gudangAsal), gudang tujuan (gudangTujuan), dan jarak tempuh (jarakTempuh). Edge mungkin belum ada
+    //F.S Edge baru ditambahkan dari vertex yang sesuai dengan gudangAsal ke gudangTujuan dengan jarak tempuh yang diberikan
     adrVertex v = firstVertex(G);
     while (v != NULL && namaGudang(v) != gudangAsal) {
         v = nextVertex(v);
@@ -33,6 +41,8 @@ void addEdge(graph &G, string gudangAsal, string gudangTujuan, int jarakTempuh) 
 }
 
 adrVertex findVertex(graph &G, string vertexName) {
+    //I.S Graph G dan nama vertex (vertexName) diberikan
+    //F.S Mengembalikan pointer ke vertex dengan nama sesuai (vertexName) jika ditemukan, atau NULL jika tidak ditemukan
     adrVertex v = firstVertex(G);
     while (v != NULL) {
         if (namaGudang(v) == vertexName) {
@@ -43,11 +53,14 @@ adrVertex findVertex(graph &G, string vertexName) {
     return NULL;
 }
 
+void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan, string rutePerjalanan[], int &indexRute, string allRoutes[][MAX_RUTE_LENGTH], int &ruteCount, JarakRute jarak[], int &jarakTempuh) {
+    //I.S Graph G, posisi sekarang, posisi tujuan, array rute perjalanan, dan variabel pembantu lainnya (index, jarak tempuh) diberikan
+    //F.S Semua rute dari posisiSekarang ke posisiTujuan ditemukan dan disimpan di allRoutes, dengan jarak tempuh masing-masing disimpan di jarak
 
-void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan,
-                       string rutePerjalanan[], int &indexRute,
-                       string allRoutes[][MAX_RUTE_LENGTH], int &ruteCount,
-                       JarakRute jarak[], int &jarakTempuh) {
+    adrVertex v;
+    adrEdge e;
+    bool visited;
+
     rutePerjalanan[indexRute++] = posisiSekarang;
 
     if (posisiSekarang == posisiTujuan) {
@@ -58,12 +71,11 @@ void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan,
         jarak[ruteCount].indexRute = ruteCount;
         ruteCount++;
     } else {
-        adrVertex v = findVertex(G, posisiSekarang);
+        v = findVertex(G, posisiSekarang);
         if (v != NULL) {
-            adrEdge e = firstEdge(v);
+            e = firstEdge(v);
             while (e != NULL) {
-                // Periksa jika node sudah dikunjungi
-                bool visited = false;
+                visited = false;
                 for (int i = 0; i < indexRute; i++) {
                     if (rutePerjalanan[i] == namaRute(e)) {
                         visited = true;
@@ -79,9 +91,7 @@ void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan,
             }
         }
     }
-    indexRute--; // Backtrack
 }
-
 
 void findAllRoutes(graph &G, string gudangAsal, string gudangTujuan, string allRoutes[][MAX_RUTE_LENGTH], int &ruteCount, JarakRute jarak[]) {
     //I.S terdefinisi graph G, GudangAsal (posisi saat ini), gudangTujuan (gudang yang dituju)
@@ -123,17 +133,17 @@ void cariRuteTerpendek(graph G, string gudangAsal, string gudangTujuan) {
     }
 }
 
-
 void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteMacet) {
     //I.S terdefinisi graph G, GudangAsal (posisi saat ini), gudangTujuan (gudang yang dituju), dan ruteMacet (rute yang terdapat kemacetan)
     //F.S memberikan rute terpendek dari gudangAal ke gudangTujuan dengan menghindari ruteMacet
-
     string allRoutes[MAX_RUTE_LENGTH][MAX_RUTE_LENGTH];
     JarakRute jarak[MAX_RUTE_LENGTH];
+    bool lewatRuteMacet;
     int ruteCount = 0;
 
     findAllRoutes(G, gudangAsal, gudangTujuan, allRoutes, ruteCount, jarak);
 
+    // Filter out routes that use the congested route
     int filteredRuteCount = 0;
     string filteredRoutes[MAX_RUTE_LENGTH][MAX_RUTE_LENGTH];
     JarakRute filteredJarak[MAX_RUTE_LENGTH];
@@ -156,6 +166,7 @@ void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteM
     }
 
     if (filteredRuteCount > 0) {
+        // Temukan indeks rute dengan jarak minimum
         int minIndex = 0;
         for (int i = 1; i < filteredRuteCount; i++) {
             if (filteredJarak[i].totalJarak < filteredJarak[minIndex].totalJarak) {
@@ -164,8 +175,8 @@ void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteM
         }
 
         cout << "Rute terpendek menghindari kemacetan: ";
-        for (int i = 0; !filteredRoutes[minIndex][i].empty(); i++) {
-            cout << filteredRoutes[minIndex][i] << " ";
+        for (int i = 0; !filteredRoutes[filteredJarak[minIndex].indexRute][i].empty(); i++) {
+            cout << filteredRoutes[filteredJarak[minIndex].indexRute][i] << " ";
         }
         cout << endl;
         cout << "Jarak tempuh: " << filteredJarak[minIndex].totalJarak << endl;
@@ -174,8 +185,9 @@ void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteM
     }
 }
 
-
 void lewatJalanTol(graph &G, string gudangAsal, string gudangTujuan, int jarakTol, bool tolTersedia) {
+    //I.S Graph G, gudang asal, gudang tujuan, jarak tol, dan status tol tersedia (tolTersedia) diberikan
+    //F.S Jika tolTersedia bernilai true, edge dengan jarak tol ditambahkan dari gudangAsal ke gudangTujuan. Jika tidak, pesan ditampilkan bahwa rute tol tidak tersedia
     if (!tolTersedia) {
         cout << "Rute tol dari " << gudangAsal << " ke " << gudangTujuan << " tidak tersedia." << endl;
         return;
