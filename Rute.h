@@ -37,7 +37,7 @@ struct graph {
     adrVertex firstVertex;
 };
 
-// Struktur data untuk menyimpan jarak dan indeks rute
+// Struct data untuk menyimpan jarak dan indeks rute
 struct JarakRute {
     int totalJarak;
     int indexRute;
