@@ -124,7 +124,7 @@ void cariRuteTerpendek(graph G, string gudangAsal, string gudangTujuan) {
         // Cetak rute terpendek
         cout << "Rute terpendek: ";
         int i = 0;
-        while (allRoutes[jarak[minIndex].indexRute][i].length() > 0) {
+        while (!allRoutes[jarak[minIndex].indexRute][i].empty()) {
             cout << allRoutes[jarak[minIndex].indexRute][i] << " ";
             i++;
         }
@@ -135,9 +135,10 @@ void cariRuteTerpendek(graph G, string gudangAsal, string gudangTujuan) {
     }
 }
 
+
 void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteMacet) {
     //I.S terdefinisi graph G, GudangAsal (posisi saat ini), gudangTujuan (gudang yang dituju), dan ruteMacet (rute yang terdapat kemacetan)
-    //F.S memberikan rute terpendek dari gudangAal ke gudangTujuan dengan menghindari ruteMacet
+    //F.S memberikan rute terpendek dari gudangAsal ke gudangTujuan dengan menghindari ruteMacet
     string allRoutes[MAX_RUTE_LENGTH][MAX_RUTE_LENGTH];
     JarakRute jarak[MAX_RUTE_LENGTH];
     bool lewatRuteMacet;
@@ -153,7 +154,7 @@ void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteM
     for (int i = 0; i < ruteCount; i++) {
         bool lewatRuteMacet = false;
         int j = 0;
-        while (allRoutes[i][j].length() > 0) {
+        while (!allRoutes[i][j].empty()) {
             if (allRoutes[i][j] == ruteMacet) {
                 lewatRuteMacet = true;
                 break;
@@ -162,7 +163,7 @@ void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteM
         }
         if (!lewatRuteMacet) {
             int k = 0;
-            while (allRoutes[i][k].length() > 0) {
+            while (!allRoutes[i][k].empty()) {
                 filteredRoutes[filteredRuteCount][k] = allRoutes[i][k];
                 k++;
             }
@@ -182,7 +183,7 @@ void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteM
 
         cout << "Rute terpendek menghindari kemacetan: ";
         int i = 0;
-        while (filteredRoutes[filteredJarak[minIndex].indexRute][i].length() > 0) {
+        while (!filteredRoutes[filteredJarak[minIndex].indexRute][i].empty()) {
             cout << filteredRoutes[filteredJarak[minIndex].indexRute][i] << " ";
             i++;
         }
@@ -192,6 +193,7 @@ void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteM
         cout << "Tidak ada rute yang ditemukan yang menghindari kemacetan." << endl;
     }
 }
+
 
 
 void lewatJalanTol(graph &G, string gudangAsal, string gudangTujuan, int jarakTol, bool tolTersedia) {
