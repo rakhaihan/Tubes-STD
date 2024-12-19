@@ -50,8 +50,8 @@ void addVertex(graph &G, string namaGudang);
 void addEdge(graph &G, string gudangAsal, string gudangTujuan, int jarakTempuh);
 adrVertex findVertex(graph &G, string vertexName);
 void printAllGudang(graph &G);
-bool isValidCity(graph &G, string &namaGudang);
-bool isConnected(graph &G, string gudangAsal, string gudangTujuan);
+bool isValid(graph &G, string &namaGudang);
+
 
 void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan, string rutePerjalanan[], int &indexRute, string allRoutes[][MAX_RUTE_LENGTH], int &ruteCount, JarakRute jarak[], int &jarakTempuh);
 void findAllRoutes(graph &G, string gudangAsal, string gudangTujuan, string allRoutes[][MAX_RUTE_LENGTH], int &ruteCount, JarakRute jarak[]);
