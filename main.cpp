@@ -29,7 +29,7 @@ int main() {
     printAllGudang(G);
     cout << "\n";
 
-    int choice;
+    string choice;
     string gudangAsal, gudangTujuan;
 
     do {
@@ -39,7 +39,7 @@ int main() {
         cout << "Pilih opsi: ";
         cin >> choice;
 
-        if (choice == 1) {
+        if (choice == "1") {
             cout << "Masukkan lokasi awal: ";
             cin >> gudangAsal;
             cout << "Masukkan lokasi tujuan: ";
@@ -89,12 +89,12 @@ int main() {
                     cout << "Biaya perjalanan: " << biaya << " Berries" << endl; // Using "Berries" as currency for fun
                 }
             }
-        } else if (choice == 2) {
+        } else if (choice == "2") {
             cout << "Keluar dari program.\n";
         } else {
             cout << "Opsi tidak valid. Silakan coba lagi.\n";
         }
-    } while (choice != 2);
+    } while (choice != "2");
 
     return 0;
 }
