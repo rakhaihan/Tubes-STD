@@ -53,6 +53,14 @@ adrVertex findVertex(graph &G, string vertexName) {
     return NULL;
 }
 
+void printAllGudang(graph &G) {
+    adrVertex currentVertex = firstVertex(G);
+    while (currentVertex != NULL) {
+        cout << namaGudang(currentVertex) << endl;
+        currentVertex = nextVertex(currentVertex);
+    }
+}
+
 void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan, string rutePerjalanan[], int &indexRute, string allRoutes[][MAX_RUTE_LENGTH], int &ruteCount, JarakRute jarak[], int &jarakTempuh) {
     //I.S Graph G, posisi sekarang, posisi tujuan, array rute perjalanan, dan variabel pembantu lainnya (index, jarak tempuh) diberikan
     //F.S Semua rute dari posisiSekarang ke posisiTujuan ditemukan dan disimpan di allRoutes, dengan jarak tempuh masing-masing disimpan di jarak
