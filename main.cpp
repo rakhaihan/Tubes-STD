@@ -1,107 +1,88 @@
 #include "Rute.h"
 
-static void tampilkanMenu() {
-    cout << "===== MENU =====" << endl;
-    cout << "1. Cari Rute Terpendek" << endl;
-    cout << "2. Lewat Jalan Tol" << endl;
-    cout << "3. Hitung Biaya Perjalanan" << endl;
-    cout << "4. Keluar" << endl;
-    cout << "================" << endl;
-    cout << "Pilih menu: ";
-}
-
 int main() {
     graph G;
     initGraph(G);
 
-    // Tambahkan vertex dan edge sebagai contoh
-    addVertex(G, "GudangA");
-    addVertex(G, "GudangB");
-    addVertex(G, "GudangC");
-    addVertex(G, "GudangD");
+    addVertex(G, "Jakarta");
+    addVertex(G, "Bandung");
+    addVertex(G, "Surabaya");
+    addVertex(G, "Yogyakarta");
+    addVertex(G, "Semarang");
+    addVertex(G, "Bali");
+    addVertex(G, "Medan");
+    addVertex(G, "Makassar");
 
-    addEdge(G, "GudangA", "GudangB", 10);
-    addEdge(G, "GudangA", "GudangC", 15);
-    addEdge(G, "GudangB", "GudangD", 20);
-    addEdge(G, "GudangC", "GudangD", 30);
+    addEdge(G, "Jakarta", "Bandung", 150);
+    addEdge(G, "Jakarta", "Yogyakarta", 560);
+    addEdge(G, "Bandung", "Surabaya", 790);
+    addEdge(G, "Yogyakarta", "Surabaya", 330);
+    addEdge(G, "Jakarta", "Semarang", 450);
+    addEdge(G, "Semarang", "Yogyakarta", 130);
+    addEdge(G, "Surabaya", "Bali", 300);
+    addEdge(G, "Medan", "Jakarta", 1435);
+    addEdge(G, "Makassar", "Surabaya", 1100);
+    addEdge(G, "Medan", "Makassar", 2480);
 
-    int pilihan;
+    printAllGudang(G);
+    cout << "\n";
+
+    int choice;
+    string gudangAsal, gudangTujuan;
+
     do {
-        tampilkanMenu();
-        cin >> pilihan;
+        cout << "Menu:\n";
+        cout << "1. Lakukan pengiriman\n";
+        cout << "2. Keluar\n";
+        cout << "Pilih opsi: ";
+        cin >> choice;
 
-        switch (pilihan) {
+        switch (choice) {
             case 1: {
-                string gudangAsal, gudangTujuan, ruteMacet;
-                char macet, lewatTol;
-                int jarakTol;
-
-                // Input asal dan tujuan
-                cout << "Masukkan nama gudang asal: ";
+                cout << "Masukkan lokasi awal: ";
                 cin >> gudangAsal;
-                cout << "Masukkan nama gudang tujuan: ";
+                cout << "Masukkan lokasi tujuan: ";
                 cin >> gudangTujuan;
 
-                // Cari rute terpendek
                 cariRuteTerpendek(G, gudangAsal, gudangTujuan);
 
-                // Pilihan: macet atau tidak
-                cout << "Apakah ada kemacetan? (y/n): ";
+                string macet;
+                cout << "Apakah ada kemacetan (y/n)? ";
                 cin >> macet;
-                if (macet == 'y' || macet == 'Y') {
-                    cout << "Masukkan nama rute yang macet: ";
-                    cin >> ruteMacet;
-                    hindariMacet(G, gudangAsal, gudangTujuan, ruteMacet);
+                if (macet == "y" || macet == "Y") {
+                    string lokasiMacet;
+                    cout << "Masukkan lokasi kemacetan: ";
+                    cin >> lokasiMacet;
+                    hindariMacet(G, gudangAsal, gudangTujuan, lokasiMacet);
                 }
 
-                // Pilihan: lewat tol atau tidak
-                cout << "Apakah ingin lewat jalan tol? (y/n): ";
-                cin >> lewatTol;
-                if (lewatTol == 'y' || lewatTol == 'Y') {
-                    cout << "Masukkan jarak tol (km): ";
+                string tol;
+                cout << "Apakah ingin lewat tol (y/n)? ";
+                cin >> tol;
+                if (tol == "y" || tol == "Y") {
+                    int jarakTol;
+                    cout << "Masukkan jarak tol: ";
                     cin >> jarakTol;
                     lewatJalanTol(G, gudangAsal, gudangTujuan, jarakTol, true);
+                } else {
+                    lewatJalanTol(G, gudangAsal, gudangTujuan, 0, false);
                 }
-                break;
-            }
-            case 2: {
-                string gudangAsal, gudangTujuan;
-                int jarakTol;
-
-                cout << "Masukkan nama gudang asal: ";
-                cin >> gudangAsal;
-                cout << "Masukkan nama gudang tujuan: ";
-                cin >> gudangTujuan;
-                cout << "Masukkan jarak tol (km): ";
-                cin >> jarakTol;
-
-                lewatJalanTol(G, gudangAsal, gudangTujuan, jarakTol, true);
-                break;
-            }
-            case 3: {
-                string gudangAsal, gudangTujuan;
-
-                cout << "Masukkan nama gudang asal: ";
-                cin >> gudangAsal;
-                cout << "Masukkan nama gudang tujuan: ";
-                cin >> gudangTujuan;
 
                 int biaya = hitungBiayaPerjalanan(G, gudangAsal, gudangTujuan);
-                if (biaya > 0) {
-                    cout << "Biaya perjalanan dari " << gudangAsal << " ke " << gudangTujuan
-                         << " adalah Rp " << biaya << endl;
+                if (biaya != -1) {
+                    cout << "Biaya perjalanan: " << biaya << " Rupiah" << endl;
                 }
+
                 break;
             }
-            case 4:
-                cout << "Keluar dari program. Terima kasih!" << endl;
+            case 2:
+                cout << "Keluar dari program.\n";
                 break;
             default:
-                cout << "Pilihan tidak valid. Silakan coba lagi." << endl;
+                cout << "Opsi tidak valid. Silakan coba lagi.\n";
+                break;
         }
-
-        cout << endl;
-    } while (pilihan != 4);
+    } while (choice != 2);
 
     return 0;
 }
