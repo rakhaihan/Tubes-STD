@@ -49,6 +49,8 @@ int main() {
                 cout << "Lokasi awal tidak valid. Silakan coba lagi.\n";
             } else if (!isValidCity(G, gudangTujuan)) {
                 cout << "Lokasi tujuan tidak valid. Silakan coba lagi.\n";
+            } else if (!isConnected(G, gudangAsal, gudangTujuan)) { 
+                cout << "Lokasi awal dan tujuan tidak memiliki hubungan dalam graf. Silakan coba lagi.\n";
             } else {
                 cariRuteTerpendek(G, gudangAsal, gudangTujuan);
 
