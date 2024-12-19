@@ -4,7 +4,7 @@ int main() {
     graph G;
     initGraph(G);
 
-    // Adding One Piece locations and edges (distances are just for example)
+   
     addVertex(G, "Alabasta");
     addVertex(G, "Dressrosa");
     addVertex(G, "Skypiea");
@@ -12,7 +12,7 @@ int main() {
     addVertex(G, "Zou");
     addVertex(G, "Wano");
     addVertex(G, "Loguetown");
-    addVertex(G, "ImpelDown");
+    addVertex(G, "Elbaph");
 
     addEdge(G, "Alabasta", "Dressrosa", 300);
     addEdge(G, "Dressrosa", "Skypiea", 200);
@@ -20,8 +20,8 @@ int main() {
     addEdge(G, "Water7", "Zou", 150);
     addEdge(G, "Zou", "Wano", 100);
     addEdge(G, "Wano", "Loguetown", 400);
-    addEdge(G, "Loguetown", "ImpelDown", 500);
-    addEdge(G, "ImpelDown", "Alabasta", 600);
+    addEdge(G, "Loguetown", "Elbaph", 500);
+    addEdge(G, "Elbaph", "Alabasta", 600);
     addEdge(G, "Loguetown", "Alabasta", 450);
 
     printAllGudang(G);
