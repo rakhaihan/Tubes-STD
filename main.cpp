@@ -4,7 +4,7 @@ int main() {
     graph G;
     initGraph(G);
 
-   
+
     addVertex(G, "Alabasta");
     addVertex(G, "Dressrosa");
     addVertex(G, "Skypiea");
@@ -14,15 +14,15 @@ int main() {
     addVertex(G, "Loguetown");
     addVertex(G, "Elbaph");
 
-    addEdge(G, "Alabasta", "Dressrosa", 300);
-    addEdge(G, "Dressrosa", "Skypiea", 200);
-    addEdge(G, "Skypiea", "Water7", 250);
-    addEdge(G, "Water7", "Zou", 150);
-    addEdge(G, "Zou", "Wano", 100);
-    addEdge(G, "Wano", "Loguetown", 400);
-    addEdge(G, "Loguetown", "Elbaph", 500);
-    addEdge(G, "Elbaph", "Alabasta", 600);
-    addEdge(G, "Loguetown", "Alabasta", 450);
+    addEdge(G, "Skypiea", "Loguetown", 250);
+    addEdge(G, "Loguetown", "Elbaph", 1100);
+    addEdge(G, "Loguetown", "Alabasta", 150);
+    addEdge(G, "Loguetown", "Water7", 200);
+    addEdge(G, "Water7", "Dressrosa", 350);
+    addEdge(G, "Dressrosa", "Wano", 210);
+    addEdge(G, "Alabasta", "Wano", 800);
+    addEdge(G, "Wano", "Zou", 450);
+    addEdge(G, "Elbaph", "Zou", 200);
 
     printAllGudang(G);
     cout << "\n";
