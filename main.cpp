@@ -4,25 +4,25 @@ int main() {
     graph G;
     initGraph(G);
 
-    addVertex(G, "Jakarta");
-    addVertex(G, "Bandung");
-    addVertex(G, "Surabaya");
-    addVertex(G, "Yogyakarta");
-    addVertex(G, "Semarang");
-    addVertex(G, "Bali");
-    addVertex(G, "Medan");
-    addVertex(G, "Makassar");
+    // Adding One Piece locations and edges (distances are just for example)
+    addVertex(G, "Alabasta");
+    addVertex(G, "Dressrosa");
+    addVertex(G, "Skypiea");
+    addVertex(G, "Water7");
+    addVertex(G, "Zou");
+    addVertex(G, "Wano");
+    addVertex(G, "Loguetown");
+    addVertex(G, "ImpelDown");
 
-    addEdge(G, "Jakarta", "Bandung", 150);
-    addEdge(G, "Jakarta", "Yogyakarta", 560);
-    addEdge(G, "Bandung", "Surabaya", 790);
-    addEdge(G, "Yogyakarta", "Surabaya", 330);
-    addEdge(G, "Jakarta", "Semarang", 450);
-    addEdge(G, "Semarang", "Yogyakarta", 130);
-    addEdge(G, "Surabaya", "Bali", 300);
-    addEdge(G, "Medan", "Jakarta", 1435);
-    addEdge(G, "Makassar", "Surabaya", 1100);
-    addEdge(G, "Medan", "Makassar", 2480);
+    addEdge(G, "Alabasta", "Dressrosa", 300);
+    addEdge(G, "Dressrosa", "Skypiea", 200);
+    addEdge(G, "Skypiea", "Water7", 250);
+    addEdge(G, "Water7", "Zou", 150);
+    addEdge(G, "Zou", "Wano", 100);
+    addEdge(G, "Wano", "Loguetown", 400);
+    addEdge(G, "Loguetown", "ImpelDown", 500);
+    addEdge(G, "ImpelDown", "Alabasta", 600);
+    addEdge(G, "Loguetown", "Alabasta", 450);
 
     printAllGudang(G);
     cout << "\n";
@@ -32,7 +32,7 @@ int main() {
 
     do {
         cout << "Menu:\n";
-        cout << "1. Lakukan pengiriman\n";
+        cout << "1. Lakukan Pengiriman\n";
         cout << "2. Keluar\n";
         cout << "Pilih opsi: ";
         cin >> choice;
@@ -70,7 +70,7 @@ int main() {
 
                 int biaya = hitungBiayaPerjalanan(G, gudangAsal, gudangTujuan);
                 if (biaya != -1) {
-                    cout << "Biaya perjalanan: " << biaya << " Rupiah" << endl;
+                    cout << "Biaya perjalanan: " << biaya << " Berries" << endl; // Using "Berries" as currency for fun
                 }
 
                 break;
