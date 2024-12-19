@@ -1,9 +1,11 @@
 #include "Rute.h"
+#include <iostream>
+
+using namespace std;
 
 int main() {
     graph G;
     initGraph(G);
-
 
     addVertex(G, "Alabasta");
     addVertex(G, "Dressrosa");
@@ -37,50 +39,60 @@ int main() {
         cout << "Pilih opsi: ";
         cin >> choice;
 
-        switch (choice) {
-            case 1: {
-                cout << "Masukkan lokasi awal: ";
-                cin >> gudangAsal;
-                cout << "Masukkan lokasi tujuan: ";
-                cin >> gudangTujuan;
+        if (choice == 1) {
+            cout << "Masukkan lokasi awal: ";
+            cin >> gudangAsal;
+            cout << "Masukkan lokasi tujuan: ";
+            cin >> gudangTujuan;
 
+            if (!isValidCity(G, gudangAsal)) {
+                cout << "Lokasi awal tidak valid. Silakan coba lagi.\n";
+            } else if (!isValidCity(G, gudangTujuan)) {
+                cout << "Lokasi tujuan tidak valid. Silakan coba lagi.\n";
+            } else {
                 cariRuteTerpendek(G, gudangAsal, gudangTujuan);
 
                 string macet;
                 cout << "Apakah ada kemacetan (y/n)? ";
                 cin >> macet;
-                if (macet == "y" || macet == "Y") {
+                if (macet == "y") {
                     string lokasiMacet;
                     cout << "Masukkan lokasi kemacetan: ";
                     cin >> lokasiMacet;
-                    hindariMacet(G, gudangAsal, gudangTujuan, lokasiMacet);
+                    if (!isValidCity(G, lokasiMacet)) {
+                        cout << "Lokasi kemacetan tidak valid. Silakan coba lagi.\n";
+                    } else {
+                        hindariMacet(G, gudangAsal, gudangTujuan, lokasiMacet);
+                    }
                 }
 
                 string tol;
                 cout << "Apakah ingin lewat tol (y/n)? ";
                 cin >> tol;
-                if (tol == "y" || tol == "Y") {
+                if (tol == "y") {
                     int jarakTol;
                     cout << "Masukkan jarak tol: ";
                     cin >> jarakTol;
-                    lewatJalanTol(G, gudangAsal, gudangTujuan, jarakTol, true);
-                } else {
+                    if (jarakTol >= 0) {
+                        lewatJalanTol(G, gudangAsal, gudangTujuan, jarakTol, true);
+                    } else {
+                        cout << "Masukkan nilai jarak tol yang valid.\n";
+                    }
+                } else if (tol == "n") {
                     lewatJalanTol(G, gudangAsal, gudangTujuan, 0, false);
+                } else {
+                    cout << "Pilihan tidak valid untuk lewat tol. Silakan coba lagi.\n";
                 }
 
                 int biaya = hitungBiayaPerjalanan(G, gudangAsal, gudangTujuan);
                 if (biaya != -1) {
                     cout << "Biaya perjalanan: " << biaya << " Berries" << endl; // Using "Berries" as currency for fun
                 }
-
-                break;
             }
-            case 2:
-                cout << "Keluar dari program.\n";
-                break;
-            default:
-                cout << "Opsi tidak valid. Silakan coba lagi.\n";
-                break;
+        } else if (choice == 2) {
+            cout << "Keluar dari program.\n";
+        } else {
+            cout << "Opsi tidak valid. Silakan coba lagi.\n";
         }
     } while (choice != 2);
 
