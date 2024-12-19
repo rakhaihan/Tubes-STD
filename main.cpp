@@ -45,12 +45,10 @@ int main() {
             cout << "Masukkan lokasi tujuan: ";
             cin >> gudangTujuan;
 
-            if (!isValidCity(G, gudangAsal)) {
+            if (!isValid(G, gudangAsal)) {
                 cout << "Lokasi awal tidak valid. Silakan coba lagi.\n";
-            } else if (!isValidCity(G, gudangTujuan)) {
+            } else if (!isValid(G, gudangTujuan)) {
                 cout << "Lokasi tujuan tidak valid. Silakan coba lagi.\n";
-            } else if (!isConnected(G, gudangAsal, gudangTujuan)) { 
-                cout << "Lokasi awal dan tujuan tidak memiliki hubungan dalam graf. Silakan coba lagi.\n";
             } else {
                 cariRuteTerpendek(G, gudangAsal, gudangTujuan);
 
@@ -61,7 +59,7 @@ int main() {
                     string lokasiMacet;
                     cout << "Masukkan lokasi kemacetan: ";
                     cin >> lokasiMacet;
-                    if (!isValidCity(G, lokasiMacet)) {
+                    if (!isValid(G, lokasiMacet)) {
                         cout << "Lokasi kemacetan tidak valid. Silakan coba lagi.\n";
                     } else {
                         hindariMacet(G, gudangAsal, gudangTujuan, lokasiMacet);
