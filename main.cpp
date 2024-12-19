@@ -23,7 +23,7 @@ int main() {
     addEdge(G, "Water7", "Dressrosa", 350);
     addEdge(G, "Dressrosa", "Wano", 210);
     addEdge(G, "Alabasta", "Wano", 800);
-    addEdge(G, "Wano", "Zou", 450);
+    addEdge(G, "Zou", "Wano", 450);
     addEdge(G, "Elbaph", "Zou", 200);
 
     printAllGudang(G);
