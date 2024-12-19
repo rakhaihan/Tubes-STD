@@ -27,16 +27,23 @@ void addVertex(graph &G, string namaGudang) {
 void addEdge(graph &G, string gudangAsal, string gudangTujuan, int jarakTempuh) {
     //I.S Graph G diberikan, beserta gudang asal (gudangAsal), gudang tujuan (gudangTujuan), dan jarak tempuh (jarakTempuh). Edge mungkin belum ada
     //F.S Edge baru ditambahkan dari vertex yang sesuai dengan gudangAsal ke gudangTujuan dengan jarak tempuh yang diberikan
-    adrVertex v = firstVertex(G);
-    while (v != NULL && namaGudang(v) != gudangAsal) {
-        v = nextVertex(v);
-    }
-    if (v != NULL) {
+    adrVertex vAsal = findVertex(G, gudangAsal);
+    if (vAsal != NULL) {
         adrEdge e = new rute;
         namaRute(e) = gudangTujuan;
         jarakTempuh(e) = jarakTempuh;
-        nextEdge(e) = firstEdge(v);
-        firstEdge(v) = e;
+        nextEdge(e) = firstEdge(vAsal);
+        firstEdge(vAsal) = e;
+    }
+
+
+    adrVertex vTujuan = findVertex(G, gudangTujuan);
+    if (vTujuan != NULL) {
+        adrEdge e = new rute;
+        namaRute(e) = gudangAsal;
+        jarakTempuh(e) = jarakTempuh;
+        nextEdge(e) = firstEdge(vTujuan);
+        firstEdge(vTujuan) = e;
     }
 }
 
@@ -126,7 +133,7 @@ void cariRuteTerpendek(graph G, string gudangAsal, string gudangTujuan) {
     findAllRoutes(G, gudangAsal, gudangTujuan, allRoutes, ruteCount, jarak);
 
     if (ruteCount > 0) {
-        // Temukan indeks rute dengan jarak minimum
+        // cari jarak minimum (nilai ekstrim)
         int minIndex = 0;
         for (int i = 1; i < ruteCount; i++) {
             if (jarak[i].totalJarak < jarak[minIndex].totalJarak) {
@@ -134,7 +141,7 @@ void cariRuteTerpendek(graph G, string gudangAsal, string gudangTujuan) {
             }
         }
 
-        // Cetak rute terpendek
+
         cout << "Rute terpendek: ";
         int i = 0;
         while (!allRoutes[jarak[minIndex].indexRute][i].empty()) {
@@ -159,7 +166,6 @@ void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteM
 
     findAllRoutes(G, gudangAsal, gudangTujuan, allRoutes, ruteCount, jarak);
 
-    // Filter out routes that use the congested route
     int filteredRuteCount = 0;
     string filteredRoutes[MAX_RUTE_LENGTH][MAX_RUTE_LENGTH];
     JarakRute filteredJarak[MAX_RUTE_LENGTH];
@@ -186,7 +192,7 @@ void hindariMacet(graph &G, string gudangAsal, string gudangTujuan, string ruteM
     }
 
     if (filteredRuteCount > 0) {
-        // Temukan indeks rute dengan jarak minimum
+        //cari jarak minimum
         int minIndex = 0;
         for (int i = 1; i < filteredRuteCount; i++) {
             if (filteredJarak[i].totalJarak < filteredJarak[minIndex].totalJarak) {
