@@ -66,6 +66,23 @@ bool isValidCity(graph &G, string &namaGudang) {
     return v != NULL;
 }
 
+bool isConnected(graph &G, string gudangAsal, string gudangTujuan) {
+    adrVertex vAsal = findVertex(G, gudangAsal);
+    if (vAsal == NULL) {
+        return false;
+    }
+
+    adrEdge e = firstEdge(vAsal);
+    while (e != NULL) {
+        if (namaRute(e) == gudangTujuan) {
+            return true;
+        }
+        e = nextEdge(e);
+    }
+
+    return false;
+}
+
 void findAllRoutesUtil(graph &G, string posisiSekarang, string posisiTujuan, string rutePerjalanan[], int &indexRute, string allRoutes[][MAX_RUTE_LENGTH], int &ruteCount, JarakRute jarak[], int &jarakTempuh) {
     //I.S Graph G, posisi sekarang, posisi tujuan, array rute perjalanan, dan variabel pembantu lainnya (index, jarak tempuh) diberikan
     //F.S Semua rute dari posisiSekarang ke posisiTujuan ditemukan dan disimpan di allRoutes, dengan jarak tempuh masing-masing disimpan di jarak
